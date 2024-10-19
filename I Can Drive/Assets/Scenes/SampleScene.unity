@@ -215,7 +215,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 481974701975eef4fabfcc25e55dea64,
         type: 3}
       propertyPath: m_Name
-      value: car 1
+      value: playerCar
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 481974701975eef4fabfcc25e55dea64,
         type: 3}
@@ -622,6 +622,57 @@ MonoBehaviour:
   forwardSpeed: 10
   laneSwitchSpeed: 5
   laneDistance: 4
+--- !u!1 &1753092829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1753092831}
+  - component: {fileID: 1753092830}
+  m_Layer: 0
+  m_Name: CarSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1753092830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753092829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0e664fc4af407d4589d81ed10984e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carPrefabs:
+  - {fileID: 8172945549811468594, guid: ce9a07697d826c94daee103ae9ccf369, type: 3}
+  player: {fileID: 1967976285}
+  spawnDistance: 100
+  carSpeed: 10
+  laneDistance: 4
+  carWidth: 2
+--- !u!4 &1753092831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753092829}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.053140085, y: 0.05468422, z: -1.166266}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1967976282
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,7 +714,7 @@ Transform:
   m_GameObject: {fileID: 1967976282}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.053140085, y: 0.05468422, z: -1.166266}
+  m_LocalPosition: {x: -0.053140085, y: -0.223, z: -1.166266}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -748,3 +799,4 @@ SceneRoots:
   - {fileID: 1539460989}
   - {fileID: 1967976285}
   - {fileID: 7574036598733266881}
+  - {fileID: 1753092831}
