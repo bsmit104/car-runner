@@ -2,11 +2,11 @@ using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-    public float forwardSpeed = 10.0f;      // Speed moving forward
-    public float laneSwitchSpeed = 10.0f;   // Speed of lane switching
-    public float laneDistance = 4.0f;       // Distance between lanes
-    private int targetLane = 1;             // 0: Left, 1: Center, 2: Right
-    private bool isChangingLane = false;    // Flag to prevent multiple lane changes at once
+    public float forwardSpeed = 10.0f;
+    public float laneSwitchSpeed = 10.0f;
+    public float laneDistance = 4.0f;
+    private int targetLane = 5; // Center lane in a 10-lane system
+    private bool isChangingLane = false;
 
     void Update() {
         // Move forward continuously
@@ -14,36 +14,102 @@ public class PlayerMovement : MonoBehaviour {
 
         // Handle lane switching input
         if (Input.GetKeyDown(KeyCode.LeftArrow) && targetLane > 0 && !isChangingLane) {
-            Debug.Log("Left Arrow Pressed");
-            targetLane--;  // Move to the left lane
-            ChangeLane();  // Call the change lane function directly
-        } 
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && targetLane < 2 && !isChangingLane) {
-            Debug.Log("Right Arrow Pressed");
-            targetLane++;  // Move to the right lane
-            ChangeLane();  // Call the change lane function directly
+            targetLane--;
+            ChangeLane();
+        } else if (Input.GetKeyDown(KeyCode.RightArrow) && targetLane < 9 && !isChangingLane) {
+            targetLane++;
+            ChangeLane();
         }
-
-        // Debug output for the current lane
-        Debug.Log($"Current Lane: {targetLane}, isChangingLane: {isChangingLane}");
     }
 
-    // Change lanes instantly for testing
     void ChangeLane() {
         isChangingLane = true;
 
         // Calculate the target lane position
-        Vector3 targetPosition = new Vector3(laneDistance * (targetLane - 1), transform.position.y, transform.position.z);
+        Vector3 targetPosition = new Vector3(laneDistance * (targetLane - 5), transform.position.y, transform.position.z);
 
-        // Snap to final lane position instantly for testing
+        // Move instantly for now (you can add smoothing later)
         transform.position = targetPosition;
 
-        // Debug output for position confirmation
-        Debug.Log($"Moved to Lane: {targetLane}, New Position: {transform.position}");
-
-        isChangingLane = false; // Allow another lane change
+        isChangingLane = false;
     }
 }
+
+
+// good //
+
+// using System.Collections;
+// using UnityEngine;
+
+// public class PlayerMovement : MonoBehaviour {
+//     public float forwardSpeed = 10.0f;      // Speed moving forward
+//     public float laneSwitchSpeed = 10.0f;   // Speed of lane switching
+//     public float laneDistance = 4.0f;       // Distance between lanes
+//     private int targetLane = 1;             // 0: Left, 1: Center, 2: Right
+//     private bool isChangingLane = false;    // Flag to prevent multiple lane changes at once
+
+//     void Update() {
+//         // Move forward continuously
+//         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+
+//         // Handle lane switching input
+//         if (Input.GetKeyDown(KeyCode.LeftArrow) && targetLane > 0 && !isChangingLane) {
+//             Debug.Log("Left Arrow Pressed");
+//             targetLane--;  // Move to the left lane
+//             ChangeLane();  // Call the change lane function directly
+//         } 
+//         else if (Input.GetKeyDown(KeyCode.RightArrow) && targetLane < 2 && !isChangingLane) {
+//             Debug.Log("Right Arrow Pressed");
+//             targetLane++;  // Move to the right lane
+//             ChangeLane();  // Call the change lane function directly
+//         }
+
+//         // Debug output for the current lane
+//         Debug.Log($"Current Lane: {targetLane}, isChangingLane: {isChangingLane}");
+//     }
+
+//     // Change lanes instantly for testing
+//     void ChangeLane() {
+//         isChangingLane = true;
+
+//         // Calculate the target lane position
+//         Vector3 targetPosition = new Vector3(laneDistance * (targetLane - 1), transform.position.y, transform.position.z);
+
+//         // Snap to final lane position instantly for testing
+//         transform.position = targetPosition;
+
+//         // Debug output for position confirmation
+//         Debug.Log($"Moved to Lane: {targetLane}, New Position: {transform.position}");
+
+//         isChangingLane = false; // Allow another lane change
+//     }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
