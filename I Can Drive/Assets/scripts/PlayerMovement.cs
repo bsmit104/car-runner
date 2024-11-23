@@ -1,3 +1,144 @@
+using UnityEngine;
+
+public class PlayerMovement : MonoBehaviour
+{
+    public float forwardSpeed = 10.0f;  // Speed moving forward
+    public float laneDistance = 4.0f;  // Distance between lanes
+    private int targetLane = 0;        // Start in the center lane
+    private Rigidbody rb;              // Reference to Rigidbody component
+    private bool isGameOver = false;   // Track game over state
+
+    private float lastLaneChangeTime = 0.0f; // Track last lane change time
+    private float laneChangeSpeed = 0.0f;   // Speed at which lanes are being changed
+    private float rotationSpeed = 10.0f;     // Rotation speed for car tilt
+    private float maxRotationAngle = 45.0f;  // Maximum rotation angle for more prominent effect
+    private float maxRotationSpeed = 50.0f;  // Max speed of rotation when changing lanes fast
+    private float rotationAcceleration = 5.0f; // How quickly rotation speeds up when changing lanes
+
+    private bool isChangingLeft = false; // Track if the player is switching left
+    private bool isChangingRight = false; // Track if the player is switching right
+
+    private float currentRotation = 0.0f; // Current rotation of the car (in degrees)
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true; // Disable physics initially
+    }
+
+    void Update()
+    {
+        if (isGameOver) return; // Stop movement if the game is over
+
+        // Move forward continuously
+        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+
+        // Track lane change speed based on time between changes
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            float timeSinceLastChange = Time.time - lastLaneChangeTime;
+            lastLaneChangeTime = Time.time;
+
+            // If lane change is too fast, increase lane change speed
+            laneChangeSpeed = timeSinceLastChange < 0.2f ? Mathf.Min(laneChangeSpeed + 2.0f, maxRotationSpeed) : 0.0f;
+        }
+
+        // Handle lane switching input (no bounds check for infinite lanes)
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            targetLane--; // Move to the left lane
+            isChangingLeft = true;
+            isChangingRight = false; // Reset right change tracking
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            targetLane++; // Move to the right lane
+            isChangingRight = true;
+            isChangingLeft = false; // Reset left change tracking
+        }
+
+        // Smooth transition between lanes
+        Vector3 targetPosition = new Vector3(laneDistance * targetLane, transform.position.y, transform.position.z);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, 10f * Time.deltaTime);
+
+        // Apply rotation based on lane change speed and direction
+        ApplyRotationBasedOnLaneChange();
+    }
+
+    void ApplyRotationBasedOnLaneChange()
+    {
+        // If the lane change is too fast, apply rotation
+        if (laneChangeSpeed > 0.0f)
+        {
+            float targetRotation = 0.0f;
+
+            // Rotate clockwise when moving left too fast
+            if (isChangingLeft)
+            {
+                targetRotation = Mathf.Clamp(currentRotation + laneChangeSpeed * 3.0f, 0, maxRotationAngle); // Clockwise rotation
+            }
+            // Rotate counterclockwise when moving right too fast
+            else if (isChangingRight)
+            {
+                targetRotation = Mathf.Clamp(currentRotation - laneChangeSpeed * 3.0f, -maxRotationAngle, 0); // Counter-clockwise rotation
+            }
+
+            // Apply rotation with dynamic speed based on lane change speed
+            rotationSpeed = Mathf.Lerp(rotationSpeed, maxRotationSpeed, laneChangeSpeed * Time.deltaTime);
+            currentRotation = Mathf.MoveTowards(currentRotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, currentRotation, 0); // Apply smooth rotation
+        }
+        else
+        {
+            // If lane change stops, stabilize rotation smoothly with faster straightening
+            rotationSpeed = Mathf.Lerp(rotationSpeed, maxRotationSpeed, 1.0f * Time.deltaTime); // Increase speed for straightening
+            currentRotation = Mathf.MoveTowards(currentRotation, 0, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, currentRotation, 0);
+        }
+    }
+
+//     public void OnTriggerEnter(Collider other)
+// {
+//     if (other.CompareTag("Car"))
+//     {
+//         Debug.Log("Triggered by a car!");
+//         Rigidbody rb = GetComponent<Rigidbody>();
+//         rb.isKinematic = false; // Enable physics
+//         GameOver(); // Call your game over logic
+//     }
+// }
+public void OnTriggerEnter(Collider other)
+{
+    if (other.CompareTag("Car"))
+    {
+        Debug.Log("Triggered by a car!");
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.isKinematic = false; // Enable physics
+        
+        // Disable the trigger and allow normal collisions
+        BoxCollider collider = GetComponent<BoxCollider>();
+        collider.isTrigger = false;
+
+        rb.AddForce(Vector3.up * 5.0f, ForceMode.Impulse); // Optional: add force to tumble player
+        
+        GameOver(); // Trigger game over logic
+    }
+}
+
+    void GameOver()
+    {
+        isGameOver = true;
+
+        // Enable physics on the player
+        rb.isKinematic = false;
+        rb.mass = 1.0f; // Make it lightweight
+        rb.AddForce(Vector3.up * 200f); // Add a small upward force for tumbling effect
+
+        // Optionally disable movement or other components
+        this.enabled = false;
+    }
+}
 
 //harry potter??
 // using UnityEngine;
@@ -139,95 +280,95 @@
 
 
 //so good
-using UnityEngine;
+// using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
-{
-    public float forwardSpeed = 10.0f;  // Speed moving forward
-    public float laneDistance = 4.0f;  // Distance between lanes
-    private int targetLane = 0;        // Start in the center lane
+// public class PlayerMovement : MonoBehaviour
+// {
+//     public float forwardSpeed = 10.0f;  // Speed moving forward
+//     public float laneDistance = 4.0f;  // Distance between lanes
+//     private int targetLane = 0;        // Start in the center lane
 
-    private float lastLaneChangeTime = 0.0f; // Track last lane change time
-    private float laneChangeSpeed = 0.0f;   // Speed at which lanes are being changed
-    private float rotationSpeed = 10.0f;     // Rotation speed for car tilt
-    private float maxRotationAngle = 45.0f;  // Maximum rotation angle for more prominent effect
-    private float maxRotationSpeed = 50.0f;  // Max speed of rotation when changing lanes fast
-    private float rotationAcceleration = 5.0f; // How quickly rotation speeds up when changing lanes
+//     private float lastLaneChangeTime = 0.0f; // Track last lane change time
+//     private float laneChangeSpeed = 0.0f;   // Speed at which lanes are being changed
+//     private float rotationSpeed = 10.0f;     // Rotation speed for car tilt
+//     private float maxRotationAngle = 45.0f;  // Maximum rotation angle for more prominent effect
+//     private float maxRotationSpeed = 50.0f;  // Max speed of rotation when changing lanes fast
+//     private float rotationAcceleration = 5.0f; // How quickly rotation speeds up when changing lanes
 
-    private bool isChangingLeft = false; // Track if the player is switching left
-    private bool isChangingRight = false; // Track if the player is switching right
+//     private bool isChangingLeft = false; // Track if the player is switching left
+//     private bool isChangingRight = false; // Track if the player is switching right
 
-    private float currentRotation = 0.0f; // Current rotation of the car (in degrees)
+//     private float currentRotation = 0.0f; // Current rotation of the car (in degrees)
 
-    void Update()
-    {
-        // Move forward continuously
-        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+//     void Update()
+//     {
+//         // Move forward continuously
+//         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
-        // Track lane change speed based on time between changes
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            float timeSinceLastChange = Time.time - lastLaneChangeTime;
-            lastLaneChangeTime = Time.time;
+//         // Track lane change speed based on time between changes
+//         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+//         {
+//             float timeSinceLastChange = Time.time - lastLaneChangeTime;
+//             lastLaneChangeTime = Time.time;
 
-            // If lane change is too fast, increase lane change speed
-            laneChangeSpeed = timeSinceLastChange < 0.2f ? Mathf.Min(laneChangeSpeed + 2.0f, maxRotationSpeed) : 0.0f;
-        }
+//             // If lane change is too fast, increase lane change speed
+//             laneChangeSpeed = timeSinceLastChange < 0.2f ? Mathf.Min(laneChangeSpeed + 2.0f, maxRotationSpeed) : 0.0f;
+//         }
 
-        // Handle lane switching input (no bounds check for infinite lanes)
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            targetLane--; // Move to the left lane
-            isChangingLeft = true;
-            isChangingRight = false; // Reset right change tracking
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            targetLane++; // Move to the right lane
-            isChangingRight = true;
-            isChangingLeft = false; // Reset left change tracking
-        }
+//         // Handle lane switching input (no bounds check for infinite lanes)
+//         if (Input.GetKeyDown(KeyCode.LeftArrow))
+//         {
+//             targetLane--; // Move to the left lane
+//             isChangingLeft = true;
+//             isChangingRight = false; // Reset right change tracking
+//         }
+//         else if (Input.GetKeyDown(KeyCode.RightArrow))
+//         {
+//             targetLane++; // Move to the right lane
+//             isChangingRight = true;
+//             isChangingLeft = false; // Reset left change tracking
+//         }
 
-        // Smooth transition between lanes
-        Vector3 targetPosition = new Vector3(laneDistance * targetLane, transform.position.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, targetPosition, 10f * Time.deltaTime); // Adjust speed as needed
+//         // Smooth transition between lanes
+//         Vector3 targetPosition = new Vector3(laneDistance * targetLane, transform.position.y, transform.position.z);
+//         transform.position = Vector3.Lerp(transform.position, targetPosition, 10f * Time.deltaTime); // Adjust speed as needed
 
-        // Apply rotation based on lane change speed and direction
-        ApplyRotationBasedOnLaneChange();
-    }
+//         // Apply rotation based on lane change speed and direction
+//         ApplyRotationBasedOnLaneChange();
+//     }
 
-    void ApplyRotationBasedOnLaneChange()
-    {
-        // If the lane change is too fast, apply rotation
-        if (laneChangeSpeed > 0.0f)
-        {
-            float targetRotation = 0.0f;
+//     void ApplyRotationBasedOnLaneChange()
+//     {
+//         // If the lane change is too fast, apply rotation
+//         if (laneChangeSpeed > 0.0f)
+//         {
+//             float targetRotation = 0.0f;
 
-            // Rotate clockwise when moving left too fast
-            if (isChangingLeft)
-            {
-                targetRotation = Mathf.Clamp(currentRotation + laneChangeSpeed * 3.0f, 0, maxRotationAngle); // Clockwise rotation
-            }
-            // Rotate counterclockwise when moving right too fast
-            else if (isChangingRight)
-            {
-                targetRotation = Mathf.Clamp(currentRotation - laneChangeSpeed * 3.0f, -maxRotationAngle, 0); // Counter-clockwise rotation
-            }
+//             // Rotate clockwise when moving left too fast
+//             if (isChangingLeft)
+//             {
+//                 targetRotation = Mathf.Clamp(currentRotation + laneChangeSpeed * 3.0f, 0, maxRotationAngle); // Clockwise rotation
+//             }
+//             // Rotate counterclockwise when moving right too fast
+//             else if (isChangingRight)
+//             {
+//                 targetRotation = Mathf.Clamp(currentRotation - laneChangeSpeed * 3.0f, -maxRotationAngle, 0); // Counter-clockwise rotation
+//             }
 
-            // Apply rotation with dynamic speed based on lane change speed
-            rotationSpeed = Mathf.Lerp(rotationSpeed, maxRotationSpeed, laneChangeSpeed * Time.deltaTime);
-            currentRotation = Mathf.MoveTowards(currentRotation, targetRotation, rotationSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(0, currentRotation, 0); // Apply smooth rotation
-        }
-        else
-        {
-            // If lane change stops, stabilize rotation smoothly with faster straightening
-            rotationSpeed = Mathf.Lerp(rotationSpeed, maxRotationSpeed, 1.0f * Time.deltaTime); // Increase speed for straightening
-            currentRotation = Mathf.MoveTowards(currentRotation, 0, rotationSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(0, currentRotation, 0);
-        }
-    }
-}
+//             // Apply rotation with dynamic speed based on lane change speed
+//             rotationSpeed = Mathf.Lerp(rotationSpeed, maxRotationSpeed, laneChangeSpeed * Time.deltaTime);
+//             currentRotation = Mathf.MoveTowards(currentRotation, targetRotation, rotationSpeed * Time.deltaTime);
+//             transform.rotation = Quaternion.Euler(0, currentRotation, 0); // Apply smooth rotation
+//         }
+//         else
+//         {
+//             // If lane change stops, stabilize rotation smoothly with faster straightening
+//             rotationSpeed = Mathf.Lerp(rotationSpeed, maxRotationSpeed, 1.0f * Time.deltaTime); // Increase speed for straightening
+//             currentRotation = Mathf.MoveTowards(currentRotation, 0, rotationSpeed * Time.deltaTime);
+//             transform.rotation = Quaternion.Euler(0, currentRotation, 0);
+//         }
+//     }
+// }
 
 
 
