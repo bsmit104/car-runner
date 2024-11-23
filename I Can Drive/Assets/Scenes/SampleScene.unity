@@ -469,8 +469,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrainPrefabs:
-  - {fileID: 4721756931726595592, guid: 0493e1c59b9d6a84fa8062f9336ff5a3, type: 3}
+  - {fileID: 1502003331560932283, guid: 28842420f2a63a04aa5cada2aa1e24d4, type: 3}
   player: {fileID: 1967976285}
+  laneDistance: 4
+  prefabWidth: 5
+  currentPrefabIndex: 0
 --- !u!4 &1539460989
 Transform:
   m_ObjectHideFlags: 0
@@ -620,7 +623,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 10
-  laneSwitchSpeed: 5
   laneDistance: 4
 --- !u!1 &1753092829
 GameObject:
@@ -654,10 +656,13 @@ MonoBehaviour:
   carPrefabs:
   - {fileID: 8172945549811468594, guid: ce9a07697d826c94daee103ae9ccf369, type: 3}
   player: {fileID: 1967976285}
-  spawnDistance: 100
+  spawnDistance: 50
   carSpeed: 10
   laneDistance: 4
   carWidth: 2
+  totalLanes: 25
+  minCarSpacing: 2
+  xOffset: -1.6
 --- !u!4 &1753092831
 Transform:
   m_ObjectHideFlags: 0
@@ -703,7 +708,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 10
-  laneSwitchSpeed: 5
   laneDistance: 4
 --- !u!4 &1967976285
 Transform:
@@ -721,6 +725,74 @@ Transform:
   - {fileID: 260394387}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5359568887083141078
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1502003331560932283, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_Name
+      value: road2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275409347420150017, guid: 28842420f2a63a04aa5cada2aa1e24d4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28842420f2a63a04aa5cada2aa1e24d4, type: 3}
 --- !u!1001 &7574036598733266881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -733,6 +805,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: road
+      objectReference: {fileID: 0}
+    - target: {fileID: 4721756931726595592, guid: 0493e1c59b9d6a84fa8062f9336ff5a3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5389925043201182898, guid: 0493e1c59b9d6a84fa8062f9336ff5a3,
         type: 3}
@@ -800,3 +877,4 @@ SceneRoots:
   - {fileID: 1967976285}
   - {fileID: 7574036598733266881}
   - {fileID: 1753092831}
+  - {fileID: 5359568887083141078}

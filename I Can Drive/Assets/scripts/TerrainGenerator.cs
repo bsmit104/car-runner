@@ -13,7 +13,8 @@ public class TerrainGenerator : MonoBehaviour
     public float prefabWidth = 5.0f;    // Number of lanes per prefab
 
     public int currentPrefabIndex = 0;  // Tracks which prefab the player is on
-    private Dictionary<int, List<GameObject>> activePrefabs; // Tracks prefabs by their indices
+    // private Dictionary<int, List<GameObject>> activePrefabs; // Tracks prefabs by their indices
+    public Dictionary<int, List<GameObject>> activePrefabs;
     private Dictionary<int, float> prefabSpawnZ; // Tracks the furthest Z for each prefab
 
     void Start()
