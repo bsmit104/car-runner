@@ -656,7 +656,7 @@ MonoBehaviour:
   carPrefabs:
   - {fileID: 8172945549811468594, guid: ce9a07697d826c94daee103ae9ccf369, type: 3}
   player: {fileID: 1967976285}
-  spawnDistance: 50
+  spawnDistance: 100
   carSpeed: 10
   laneDistance: 4
   carWidth: 2
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 954ff1607656a7e46879460dc21f0fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 10
+  forwardSpeed: 40
   laneDistance: 4
 --- !u!4 &1967976285
 Transform:

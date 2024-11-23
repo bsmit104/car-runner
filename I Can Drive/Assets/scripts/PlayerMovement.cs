@@ -1,3 +1,144 @@
+
+//harry potter??
+// using UnityEngine;
+
+// public class PlayerMovement : MonoBehaviour
+// {
+//     public float forwardSpeed = 10.0f;  // Speed moving forward
+//     public float laneDistance = 4.0f;  // Distance between lanes
+//     private int targetLane = 0;        // Start in the center lane
+
+//     private float lastLaneChangeTime = 0.0f; // Track last lane change time
+//     private float laneChangeSpeed = 0.0f;   // Speed at which lanes are being changed
+//     private float rotationSpeed = 10.0f;     // Rotation speed for car tilt
+//     private float maxRotationAngle = 90.0f;  // Maximum rotation angle (we want 90 degrees)
+//     private float maxRotationSpeed = 50.0f;  // Max speed of rotation when changing lanes fast
+//     private float rotationAcceleration = 5.0f; // How quickly rotation speeds up when changing lanes
+
+//     private bool isChangingLeft = false; // Track if the player is switching left
+//     private bool isChangingRight = false; // Track if the player is switching right
+
+//     private float currentRotation = 0.0f; // Current rotation of the car (in degrees)
+//     private bool isTumbling = false; // Flag to check if car is in the tumbling state
+//     private float tumbleTime = 0.0f; // Track time spent in tumbling effect
+//     private Vector3 tumbleRotation = Vector3.zero; // Current tumble rotation offsets
+
+//     void Update()
+//     {
+//         // Move forward continuously
+//         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+
+//         // Track lane change speed based on time between changes
+//         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+//         {
+//             float timeSinceLastChange = Time.time - lastLaneChangeTime;
+//             lastLaneChangeTime = Time.time;
+
+//             // If lane change is too fast, increase lane change speed
+//             laneChangeSpeed = timeSinceLastChange < 0.2f ? Mathf.Min(laneChangeSpeed + 2.0f, maxRotationSpeed) : 0.0f;
+//         }
+
+//         // Handle lane switching input (no bounds check for infinite lanes)
+//         if (Input.GetKeyDown(KeyCode.LeftArrow))
+//         {
+//             targetLane--; // Move to the left lane
+//             isChangingLeft = true;
+//             isChangingRight = false; // Reset right change tracking
+//         }
+//         else if (Input.GetKeyDown(KeyCode.RightArrow))
+//         {
+//             targetLane++; // Move to the right lane
+//             isChangingRight = true;
+//             isChangingLeft = false; // Reset left change tracking
+//         }
+
+//         // Smooth transition between lanes
+//         Vector3 targetPosition = new Vector3(laneDistance * targetLane, transform.position.y, transform.position.z);
+//         transform.position = Vector3.Lerp(transform.position, targetPosition, 10f * Time.deltaTime); // Adjust speed as needed
+
+//         // Apply rotation based on lane change speed and direction
+//         ApplyRotationBasedOnLaneChange();
+
+//         // Handle the tumbling effect
+//         if (isTumbling)
+//         {
+//             ApplyTumblingEffect();
+//         }
+//     }
+
+//     void ApplyRotationBasedOnLaneChange()
+//     {
+//         // If the lane change is too fast, apply rotation
+//         if (laneChangeSpeed > 0.0f)
+//         {
+//             float targetRotation = currentRotation;
+
+//             // Rotate clockwise when moving left too fast
+//             if (isChangingLeft)
+//             {
+//                 targetRotation = Mathf.Clamp(currentRotation + laneChangeSpeed * 3.0f, 0, maxRotationAngle); // Clockwise rotation
+//             }
+//             // Rotate counterclockwise when moving right too fast
+//             else if (isChangingRight)
+//             {
+//                 targetRotation = Mathf.Clamp(currentRotation - laneChangeSpeed * 3.0f, -maxRotationAngle, 0); // Counter-clockwise rotation
+//             }
+
+//             // Apply rotation with dynamic speed based on lane change speed
+//             rotationSpeed = Mathf.Lerp(rotationSpeed, maxRotationSpeed, laneChangeSpeed * Time.deltaTime);
+//             currentRotation = Mathf.MoveTowards(currentRotation, targetRotation, rotationSpeed * Time.deltaTime);
+            
+//             // Apply the rotation to X and Z axes only, preserving the Y axis
+//             transform.rotation = Quaternion.Euler(currentRotation, transform.rotation.eulerAngles.y, 0);
+
+//             // Trigger tumbling effect if the car reaches horizontal position
+//             if (Mathf.Abs(currentRotation) >= maxRotationAngle && !isTumbling)
+//             {
+//                 isTumbling = true;
+//                 tumbleTime = Time.time; // Start tumbling effect
+//             }
+//         }
+//         else
+//         {
+//             // If lane change stops, stabilize rotation smoothly with faster straightening
+//             rotationSpeed = Mathf.Lerp(rotationSpeed, maxRotationSpeed, 1.0f * Time.deltaTime); // Increase speed for straightening
+//             currentRotation = Mathf.MoveTowards(currentRotation, 0, rotationSpeed * Time.deltaTime);
+            
+//             // Apply the stabilized rotation
+//             transform.rotation = Quaternion.Euler(currentRotation, transform.rotation.eulerAngles.y, 0);
+//         }
+//     }
+
+//     void ApplyTumblingEffect()
+//     {
+//         // Calculate the time spent tumbling
+//         float tumbleDuration = 2.0f; // Tumble duration for 2 seconds
+//         float tumbleElapsed = Time.time - tumbleTime;
+
+//         if (tumbleElapsed < tumbleDuration)
+//         {
+//             // Apply slight random rotation to simulate tumbling
+//             float tumbleSpeed = 5.0f; // Speed of tumbling
+//             tumbleRotation.x = Mathf.Sin(tumbleElapsed * tumbleSpeed) * 30.0f; // Sin wave effect for rotation on x-axis
+//             tumbleRotation.z = Mathf.Cos(tumbleElapsed * tumbleSpeed) * 10.0f;  // Slight rotation on the z-axis for tumbling effect
+
+//             // Apply the tumbling rotation, preserving Y rotation
+//             transform.rotation = Quaternion.Euler(tumbleRotation.x, transform.rotation.eulerAngles.y, tumbleRotation.z);
+//         }
+//         else
+//         {
+//             // After tumbling, straighten out the rotation
+//             isTumbling = false;
+//             tumbleRotation = Vector3.zero; // Reset tumble offsets
+//             currentRotation = Mathf.MoveTowards(currentRotation, 0, rotationSpeed * Time.deltaTime);
+//             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0); // Final straightening
+//         }
+//     }
+// }
+
+
+
+//so good
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -87,6 +228,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 }
+
+
 
 
 // better rotation
