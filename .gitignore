@@ -10,6 +10,23 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
+# Firebase config files (Android/iOS)
+google-services.json
+GoogleService-Info.plist
+
+# Firebase binary files (too large for GitHub)
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.bundle
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.so
+
+# Firebase CLI local configuration
+.firebase/
+
+# Node.js dependencies
+node_modules/
+
+# Logs
+firebase-debug.log
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
