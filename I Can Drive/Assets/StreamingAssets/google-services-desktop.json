@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "213345134049",
+    "project_id": "icandrive-d6562",
+    "storage_bucket": "icandrive-d6562.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213345134049:android:0d301da8fe512d69b3dea0",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.ICanDrive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpi42gfDoBEgNYoL234puW1XX9Gf3pZ5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
